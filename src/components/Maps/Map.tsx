@@ -119,24 +119,24 @@ const Map = () => {
             <Marker
               key={crypto.randomUUID()}
               coordinates={[Number(longitude), Number(latitude)]}
+              onMouseEnter={() => {
+                setTooltipData((prevObj) => ({
+                  ...prevObj,
+                  country,
+                  internetUsers,
+                  percent,
+                  region,
+                  subRegion,
+                }));
+              }}
+              onMouseLeave={() => {
+                setTooltipData(initialTooltipDataObj);
+              }}
             >
               <circle
                 fill="rgba(43, 136, 229, 0.776)"
                 stroke="rgba(255, 255, 255, 0.833)"
                 r={percentScale(Number(percent))}
-                onMouseEnter={() => {
-                  setTooltipData((prevObj) => ({
-                    ...prevObj,
-                    country,
-                    internetUsers,
-                    percent,
-                    region,
-                    subRegion,
-                  }));
-                }}
-                onMouseLeave={() => {
-                  setTooltipData(initialTooltipDataObj);
-                }}
               />
             </Marker>
           );
