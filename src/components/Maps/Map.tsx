@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { memo, useEffect, useMemo, useState } from "react";
 import {
   ComposableMap,
   Geographies,
@@ -18,12 +18,31 @@ type CountryDataObj = {
   Percentage: string;
 
   Subregion: string;
+  Region: string;
 
   latitude: string;
   longitude: string;
 };
-export const Map = () => {
-  const [tooltipText, setTooltipText] = useState<string>("");
+
+type tooltipDataObj = {
+  country: string;
+  internetUsers: string | number;
+  region: string;
+  subRegion: string;
+  percent: string | number;
+};
+const initialTooltipDataObj = {
+  country: "",
+  internetUsers: "",
+  region: "",
+  subRegion: "",
+  percent: "",
+};
+const Map = () => {
+  const [tooltipData, setTooltipData] = useState<tooltipDataObj>(
+    initialTooltipDataObj
+  );
+  const { country, internetUsers, region, subRegion, percent } = tooltipData;
   const [maxValue, setMaxValue] = useState<number>(0);
   const [countriesData, setCountriesData] = useState<CountryDataObj[] | any>(
     []
@@ -50,58 +69,99 @@ export const Map = () => {
     [maxValue]
   );
   return (
-    <div data-tip="">
+    <div data-tip="" className="world-map">
       <ComposableMap>
-        <ZoomableGroup>
-          <Geographies geography="https://world-map-backend.sen442b.repl.co/features">
-            {({ geographies }) => {
-              return geographies.map((geo) => (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  style={{
-                    default: {
-                      fill: "#D6D6DA",
-                      outline: "none",
-                    },
-                    hover: {
-                      fill: "#F53",
-                      outline: "none",
-                    },
-                    pressed: {
-                      fill: "#E42",
-                      outline: "none",
-                    },
-                  }}
-                  onMouseEnter={() => setTooltipText(geo.properties.name)}
-                  onMouseLeave={() => setTooltipText("")}
-                />
-              ));
-            }}
-          </Geographies>
-          {countriesData.map((country: CountryDataObj) => {
-            const { latitude, longitude, Percentage: percentage } = country;
+        <Geographies geography="https://world-map-backend.sen442b.repl.co/features">
+          {({ geographies }) => {
+            return geographies.map((geo) => (
+              <Geography
+                key={geo.rsmKey}
+                geography={geo}
+                style={{
+                  default: {
+                    fill: "#D6D6DA",
+                    outline: "none",
+                  },
+                  hover: {
+                    fill: "rgba(255, 85, 51, 0.808)",
+                    outline: "none",
+                  },
+                  pressed: {
+                    fill: "#E42",
+                    outline: "none",
+                  },
+                }}
+                onMouseEnter={() =>
+                  setTooltipData((prevObj) => ({
+                    ...prevObj,
+                    country: geo.properties.name,
+                  }))
+                }
+                onMouseLeave={() =>
+                  setTooltipData((prevObj) => ({ ...prevObj, country: "" }))
+                }
+              />
+            ));
+          }}
+        </Geographies>
+        {countriesData.map((currCountry: CountryDataObj) => {
+          const {
+            ["Country or area"]: country,
+            ["Internet users"]: internetUsers,
+            ["Region"]: region,
+            ["Subregion"]: subRegion,
+            latitude,
+            longitude,
+            Percentage: percent,
+          } = currCountry;
 
-            return (
-              <Marker
-                key={crypto.randomUUID()}
-                coordinates={[Number(longitude), Number(latitude)]}
-              >
-                <circle
-                  fill="rgba(43, 136, 229, 0.776)"
-                  stroke="rgba(255, 255, 255, 0.833)"
-                  r={percentScale(Number(percentage))}
-                />
-              </Marker>
-            );
-          })}
-        </ZoomableGroup>
+          return (
+            <Marker
+              key={crypto.randomUUID()}
+              coordinates={[Number(longitude), Number(latitude)]}
+            >
+              <circle
+                fill="rgba(43, 136, 229, 0.776)"
+                stroke="rgba(255, 255, 255, 0.833)"
+                r={percentScale(Number(percent))}
+                onMouseEnter={() => {
+                  setTooltipData((prevObj) => ({
+                    ...prevObj,
+                    country,
+                    internetUsers,
+                    percent,
+                    region,
+                    subRegion,
+                  }));
+                }}
+                onMouseLeave={() => setTooltipData(initialTooltipDataObj)}
+              />
+            </Marker>
+          );
+        })}
       </ComposableMap>
-      {tooltipText && (
-        <MouseTooltip visible={true} offsetX={25} offsetY={15}>
-          <span>{tooltipText}</span>
+      {country && (
+        <MouseTooltip visible={true} offsetX={2} offsetY={1}>
+          <div className="tooltip">
+            <p>{country}</p>
+
+            {region && (
+              <>
+                <small>
+                  {Number(percent) * 100}% of the population has internet access
+                </small>
+                <div>
+                  <p>Total internet users: {internetUsers}</p>
+                  <p>Region: {region}</p>
+                  <p>Sub region: {subRegion}</p>
+                </div>
+              </>
+            )}
+          </div>
         </MouseTooltip>
       )}
     </div>
   );
 };
+
+export default memo(Map);

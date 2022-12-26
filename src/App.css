@@ -4,3 +4,40 @@
   padding: 2rem;
   text-align: center;
 }
+
+.heading-main {
+  font-size: 4rem;
+  font-weight: 700;
+}
+
+.heading-secondary {
+  color: #bbc2d6;
+  font-size: 1.5rem;
+}
+
+.tooltip {
+  background-color: rgba(16, 16, 16, 0.5);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  padding: 4px;
+  min-width: 10rem;
+}
+
+.world-map {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.886);
+}
+
+@media (max-width: 684px) {
+  .tooltip {
+    min-width: auto;
+  }
+  .heading-main {
+    font-size: 2rem;
+  }
+  .heading-secondary {
+    font-size: 1rem;
+  }
+}
