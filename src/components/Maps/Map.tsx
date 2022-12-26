@@ -124,7 +124,7 @@ const Map = () => {
                 fill="rgba(43, 136, 229, 0.776)"
                 stroke="rgba(255, 255, 255, 0.833)"
                 r={percentScale(Number(percent))}
-                onMouseEnter={() => {
+                onMouseOver={() => {
                   setTooltipData((prevObj) => ({
                     ...prevObj,
                     country,
@@ -134,7 +134,7 @@ const Map = () => {
                     subRegion,
                   }));
                 }}
-                onMouseLeave={() => {
+                onMouseOut={() => {
                   setTooltipData(initialTooltipDataObj);
                 }}
               />
