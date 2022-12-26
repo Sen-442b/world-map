@@ -91,15 +91,15 @@ const Map = () => {
                     outline: "none",
                   },
                 }}
-                /*onMouseEnter={() =>
+                onMouseEnter={() =>
                   setTooltipData((prevObj) => ({
                     ...prevObj,
-                    country: geo.properties.name, 
+                    country: geo.properties.name,
                   }))
                 }
                 onMouseLeave={() =>
                   setTooltipData((prevObj) => ({ ...prevObj, country: "" }))
-                } */
+                }
               />
             ));
           }}
@@ -124,7 +124,7 @@ const Map = () => {
                 fill="rgba(43, 136, 229, 0.776)"
                 stroke="rgba(255, 255, 255, 0.833)"
                 r={percentScale(Number(percent))}
-                onMouseOver={() => {
+                onMouseEnter={() => {
                   setTooltipData((prevObj) => ({
                     ...prevObj,
                     country,
@@ -134,7 +134,7 @@ const Map = () => {
                     subRegion,
                   }));
                 }}
-                onMouseOut={() => {
+                onMouseLeave={() => {
                   setTooltipData(initialTooltipDataObj);
                 }}
               />
