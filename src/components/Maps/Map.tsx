@@ -135,6 +135,7 @@ const Map = () => {
                   }));
                 }}
                 onMouseLeave={() => {
+                  console.log(initialTooltipDataObj);
                   setTooltipData(initialTooltipDataObj);
                 }}
               />
