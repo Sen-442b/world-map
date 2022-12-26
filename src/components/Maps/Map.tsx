@@ -91,15 +91,15 @@ const Map = () => {
                     outline: "none",
                   },
                 }}
-                onMouseEnter={() =>
+                /*onMouseEnter={() =>
                   setTooltipData((prevObj) => ({
                     ...prevObj,
-                    country: geo.properties.name,
+                    country: geo.properties.name, 
                   }))
                 }
                 onMouseLeave={() =>
                   setTooltipData((prevObj) => ({ ...prevObj, country: "" }))
-                }
+                } */
               />
             ));
           }}
