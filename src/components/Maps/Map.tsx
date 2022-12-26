@@ -91,13 +91,13 @@ const Map = () => {
                     outline: "none",
                   },
                 }}
-                onMouseOver={() =>
+                onMouseEnter={() =>
                   setTooltipData((prevObj) => ({
                     ...prevObj,
                     country: geo.properties.name,
                   }))
                 }
-                onMouseOut={() =>
+                onMouseLeave={() =>
                   setTooltipData((prevObj) => ({ ...prevObj, country: "" }))
                 }
               />
@@ -134,7 +134,9 @@ const Map = () => {
                     subRegion,
                   }));
                 }}
-                onMouseLeave={() => setTooltipData(initialTooltipDataObj)}
+                onMouseLeave={() => {
+                  setTooltipData(initialTooltipDataObj);
+                }}
               />
             </Marker>
           );
